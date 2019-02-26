@@ -1,0 +1,16 @@
+*{
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	padding:0;
+	background: $bg_body;
+	height: 100vh;
+}
+
+.fr{
+	float: right;
+}
+.fl{
+	float: left;
+}
