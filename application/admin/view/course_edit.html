@@ -1,0 +1,156 @@
+{extend name="base" /}
+{block name="container"}
+<div class="panel panel-default">
+  <div class="panel-heading main-color-bg">
+    <h3 class="panel-title">添加课时</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-horizontal" id="selectSeriesForm" method="post">
+      <div class="form-group">
+        <label for="list" class="col-sm-2 control-label">选择课程</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="serieslist" id="serieslist">
+            <option value="">请先选择课程</option>
+            {volist name="list" id="vo" }
+            <option value="{$vo.series_id}" {eq name="vo.series_id" value="$seriesid"}selected{/eq}>《{$vo.series_title}》</option>
+            {/volist}
+          </select>
+        </div>
+      </div>
+    </form>
+    <hr>
+    {notempty name="series"}
+    <div class="panel panel-default">
+      <div class="panel-body series-panel">
+        <div class="row">
+          <div class="col-md-3">
+            <img src="/uploads/{$series['series_pic']}" alt="" height="120px" width="180px">
+          </div>
+          <div class="col-md-9">
+            <h3>{$series['series_title']}</h3>
+            {$series['series_sub']}
+            <br>
+            <span style="color:#f40;">{$series['series_price']|default='免费'}</span>
+            <br>
+            创建时间:{:date('Y-m-d',$series['series_addtime'])}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h4>课程简介</h4>
+            {$series['series_content']|raw}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body series-panel">
+        <form class="form-horizontal" method="post" action="/admin/keshi/addcourse" enctype="multipart/form-data">
+          <input type="hidden" name="seriesid" value="{$seriesid}">
+          <div class="form-group">
+            <label for="course_title" class="col-sm-2 control-label">课时标题</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="course_title" id="course_title" placeholder="课时标题">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="course_title" class="col-sm-2 control-label">课时主图</label>
+            <div class="col-sm-10">
+              <input type="file" class="form-control" name="imgurl" id="imgurl">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="course_video" class="col-sm-2 control-label">视频地址</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="course_video" id="course_video" placeholder="视频地址">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="course_isfree" class="col-sm-2 control-label">是否可以试看</label>
+            <div class="col-sm-10">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="course_isfree" value="0" checked>否
+                </label>
+                <label>
+                  <input type="radio" name="course_isfree" value="1">是
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+        <label for="info" class="col-sm-2 control-label">课时简介</label>
+        <div class="col-sm-10">
+          <textarea name="info" id="info"></textarea>
+        </div>
+      </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-primary jsBtnSave">添加课时</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <style>
+    .wrap-add-course{
+    display: flex;
+    flex-wrap: wrap;
+    }
+    .wrap-add-course-item{
+    width: 200px;
+    height: 140px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px #ccc;
+    padding-top: 35px;
+    cursor: pointer;
+    margin: 5px;
+    position: relative;
+    overflow: hidden;
+    }
+    .wrap-add-course-item img{
+      width: 200px;
+    height: 120px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    }
+    .wrap-add-course-item span{
+      background: #000;
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    color: #fff;
+    }
+    </style>
+    <div class="panel panel-default">
+      <div class="panel-body series-panel">
+        <div class="wrap-add-course">
+          {volist name="seriescourse" id="vo" }
+          <div class="wrap-add-course-item">
+            {notempty name="vo['course_pics']"}<img src="/uploads/{$vo.course_pics}" alt="">{/notempty}
+            <span>{$vo.course_title}</span>
+          </div>
+          {/volist}
+        </div>
+      </div>
+    </div>
+    <script src="/bower/bower_components/ckeditor/ckeditor.js"></script>
+    <script>CKEDITOR.replace('info');</script>
+    {/notempty}
+  </div>
+</div>
+{/block}
+{block name="pagend"}
+
+<script>
+
+$(function(){
+$('#serieslist').on('change',function(){$('#selectSeriesForm').submit()})
+
+})
+</script>
+{/block}

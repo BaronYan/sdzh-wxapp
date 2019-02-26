@@ -1,0 +1,87 @@
+{extend name="base" /}
+{block name="container"}
+<div class="panel panel-default">
+  <div class="panel-heading main-color-bg">
+    <h3 class="panel-title">新建课程</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-horizontal" method="post" action="/admin/kecheng/add" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title" class="col-sm-2 control-label">课程标题</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="title" id="title" placeholder="课程标题">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="subtile" class="col-sm-2 control-label">课程副标题</label>
+        <div class="col-sm-10">
+          <textarea type="text" class="form-control" id="subtile" name="subtile" placeholder="课程副标题"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cate" class="col-sm-2 control-label">课程分类</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="cate">
+            {volist name="cate" id="vo" }
+            <option value="{$vo.scc_id}">{$vo.scc_title}</option>
+            {/volist}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="imgurl" class="col-sm-2 control-label">封面图片</label>
+        <div class="col-sm-10">
+          <input type="file" class="form-control" name="imgurl" id="imgurl">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">课程价格</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" name="price" id="price" placeholder="1.0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">课程进度</label>
+        <div class="col-sm-10">
+          <div class="radio">
+            <label>
+              <input type="radio" name="status" value="0" checked>未发布
+            </label>
+            <label>
+              <input type="radio" name="status" value="1">更新中
+            </label>
+            <label>
+              <input type="radio" name="status" value="2">已完结
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="teacher" class="col-sm-2 control-label">主讲老师</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="teacher" id="teacher" placeholder="主讲老师">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="info" class="col-sm-2 control-label">课程简介</label>
+        <div class="col-sm-10">
+          <textarea name="info" id="info"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary jsBtnSave">创建课程</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{/block}
+{block name="pagehead"}
+<script src="/bower/bower_components/ckeditor/ckeditor.js"></script>
+{/block}
+{block name="pagend"}
+<script>
+  CKEDITOR.replace('info');
+</script>
+{/block}

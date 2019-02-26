@@ -1,0 +1,73 @@
+
+<div class="modal fade" tabindex="-1" role="dialog" id="addseries">
+	<div class="modal-dialog  modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">选择课程</h4>
+			</div>
+			<div class="modal-body">
+
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th style="text-align: center;">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="" v-model="checkedseriesall"  @click="checkedserall">
+									</label>
+								</div>
+							</th>
+							<th style="text-align: center;">课程名称</th>
+							<th style="text-align: center;">课程价格</th>
+							<th style="text-align: center;">课程状态</th>
+							<th style="text-align: center;">讲师</th>
+							<th style="text-align: center;">添加时间</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						{volist name="serlist" id="vo1" }
+						<tr>
+							<td>
+								<div class="checkbox">
+									<label>
+										<input @click='changedStuSer'  class="checkedseriesids" type="checkbox" value="{$vo1.series_id}" v-model="checkedseriesids">
+									</label>
+								</div>
+							</td>
+							<td style="min-width: 300px;">
+								<div class="series-pic">
+									<img src="/uploads/{$vo1.series_pic}" alt=""/><br/>
+									<span style="font-weight: 700;color: #30a19b;">{$vo1.series_title}</span><br/>
+									<span>{$vo1.series_sub}</span>
+								</div>
+							</td>
+							<td style="color:#f40;">
+								{$vo1.series_price|default='免费'}
+							</td>
+							<td>
+								{eq name="vo1.series_status" value="0"}待发布{/eq}
+								{eq name="vo1.series_status" value="1"}更新中{/eq}
+								{eq name="vo1.series_status" value="2"}已完结{/eq}
+							</td>
+							<td>
+								{$vo1.series_teacher}
+							</td>
+							<td>
+								{:date('Y-m-d',$vo1.series_addtime)}
+							</td>
+							
+							{/volist}
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" @click='updateSeries'>保存</button>
+				</div>
+			</div>
+		</div>
+	</div>

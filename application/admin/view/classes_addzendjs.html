@@ -1,0 +1,149 @@
+<script src="https://cdn.bootcss.com/vue/2.5.21/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+<script src="https://cdn.bootcss.com/qs/6.6.0/qs.min.js"></script>
+<script>
+var svsv=new Vue({
+		el: '#classIndex',
+		data: {
+			checkedstudentsall:'',
+			checkedstudentsids:[],
+			checkedseriesall:'',
+			checkedseriesids:[],
+			types: 'stu',
+			classid: ''
+		},
+		methods:{
+			setTypeStu(cid,ids=''){
+				this.types = 'stu'
+				this.classid = cid
+				this.checkedstudentsids=ids.split(',')
+			},
+			setTypeSer(cid,ids=''){
+				this.types = 'ser'
+				this.classid = cid
+				this.checkedseriesids=ids.split(',')
+			},
+			updateStudent(){
+				let _this=this
+				if (this.checkData()) {
+					if (this.types=='stu') {
+						this.request('/admin/banji/addstu',{
+							classid:_this.classid,
+							ids:_this.checkedstudentsids.join()
+						}).then(ret=>_this.result(ret))
+					}else{
+						swal({
+							title: "错误消息",
+							text: "非法操作",
+							type:'error',
+							timer: 3000,
+							showConfirmButton: false
+						})
+					}
+				}
+			},
+			updateSeries(){
+				let _this=this
+				if (this.checkData()) {
+					if (this.types=='ser') {
+						this.request('/admin/banji/addser',{
+							classid:_this.classid,
+							ids:_this.checkedseriesids.join()
+						}).then(ret=>_this.result(ret))
+					}
+				}else{
+					swal({
+						title: "错误消息",
+						text: "非法操作",
+						type:'error',
+						timer: 3000,
+						showConfirmButton: false
+					})
+				}
+			},
+			checkData(){
+				let _this = this
+				if (_this.types==''||_this.classid=='') {
+					swal({
+						title: "错误消息",
+						text: "班级不能为空或者操作类型有误",
+						type:'error',
+						timer: 3000,
+						showConfirmButton: false
+					})
+					return false
+				}else{
+					return true
+				}
+			},
+			request(url,data){
+				return axios({
+					method: "post",
+					url: url,
+					data: Qs.stringify(data),
+					timeout: 30000, // 超时时间, 单位毫秒
+					headers: {
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+					}
+				})
+			},
+			result(ret,type,message){
+				if (type&&message) {
+					swal({
+						text: message,
+						type:type,
+						timer: 3000,
+						showConfirmButton: false
+					})
+				}else{
+					if (ret.data.status>0) {
+						swal({
+							title: "操作成功",
+							text: ret.data.message,
+							type:'success',
+							timer: 3000,
+							showConfirmButton: false
+						})
+					}else{
+						swal({
+							title: "操作失败",
+							text: ret.data.message,
+							type:'error',
+							timer: 3000,
+							showConfirmButton: false
+						})
+					}
+				}
+			},
+			checkedstuall(){
+				let _this = this
+				if (_this.checkedstudentsall) {
+					_this.checkedstudentsids=[]
+				}else{
+					$('.checkedstudentsids').each(function(){
+						_this.checkedstudentsids.push($(this).val());
+					})
+				}
+			},
+			checkedserall(){
+				let _this = this
+				if (this.checkedseriesall) {
+					this.checkedseriesids=[]
+				}else{
+					$('.checkedseriesids').each(function(){
+						_this.checkedseriesids.push($(this).val());
+					})
+				}
+			},
+			changedStuSer(){
+				if (this.checkedstudentsids.length!=$('.checkedstudentsids').length) {
+					this.checkedstudentsall=''
+				}
+				if (this.checkedseriesids.length!=$('.checkedseriesids').length) {
+					this.checkedseriesall=''
+				}
+			}
+		}
+	})
+</script>

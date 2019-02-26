@@ -1,0 +1,10 @@
+.idea
+.vscode
+/vendor
+/src
+*.log
+thinkphp
+.env
+.DS_Store
+node_modules
+bower_components

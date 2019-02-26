@@ -1,0 +1,68 @@
+{extend name="base" /}
+{block name="container"}
+<style>
+  .modal-body{
+        overflow-y: auto;
+      max-height: 450px;
+  }
+ .series-pic img {
+    width: 180px;
+    height: 120px;
+    float: left;
+    margin: 5px;
+    border-radius: 5px;
+}
+.img-stu-avatar{
+      width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-right: 15px;
+    float: left;
+}
+</style>
+<div id="classIndex">
+<div class="panel panel-default">
+  <div class="panel-heading main-color-bg">
+    <h3 class="panel-title">班级列表</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>班级名称</th>
+          <th>班级简介</th>
+          <th>开课时间</th>
+          <th>结课时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {volist name="list" id="vo"}
+        <tr>
+          <td>
+            {$vo.class_name}
+          </td>
+          <td>
+            {$vo.class_content|raw}
+          </td>
+          <td>
+            {$vo.class_starttime}
+          </td>
+          <td>
+            {$vo.class_endtime|default='永久'}
+          </td>
+          <td class="td-md">
+            <a class="btn btn-default" href="#" @click='setTypeSer({$vo.class_id},"{$vo.class_seriesids}")' data-toggle="modal" data-target="#addseries">添加课程</a>
+            <a class="btn btn-default" href="#"  @click='setTypeStu({$vo.class_id},"{$vo.class_studentids}")' data-toggle="modal" data-target="#addstudent">添加学员</a>
+          </td>
+        </tr>
+        {/volist}
+      </tbody>
+    </table>
+  </div>
+</div>
+{include file="classes/addseries" /}
+{include file="classes/addstudent" /}
+</div>
+{include file="classes/addzendjs" /}
+{/block}

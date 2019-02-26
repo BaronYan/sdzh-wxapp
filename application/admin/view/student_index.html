@@ -1,0 +1,46 @@
+{extend name="base" /}
+{block name="container"}
+<style>
+.img-stu-avatar{
+height: 60px;
+width: 60px;
+float: left;
+padding-right: 5px;
+}
+</style>
+<div class="panel panel-default">
+  <div class="panel-heading main-color-bg">
+    <h3 class="panel-title">学员列表</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover table-striped">
+      <tbody>
+        {volist name="list" id="vo" }
+        {notempty name='vo.wxmeta'}
+        <tr>
+          <td>
+            <img class="img-stu-avatar" src="{$vo.wxmeta.avatarUrl}" alt=""/>
+            <span>{$vo.wxmeta.nickName}</span><br/>
+            {eq name="vo.wxmeta.gender" value="1"}
+            <span>男</span>
+            {else/}
+            <span>女</span>
+            {/eq}
+          </td>
+          {$vo.wxmeta.city}
+          <td>
+            {$vo.wxmeta.country}
+          </td>
+          <td>
+            <a href="#" class="btn btn-default" >删除学员</a>
+          </td>
+        </tr>
+        {/notempty}
+        {/volist}
+      </tbody>
+    </table>
+  </div>
+</div>
+{/block}
+{block name="pagend"}
+{/block}

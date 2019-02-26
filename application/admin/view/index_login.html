@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>{$siteTitle}-{$pageTitle}</title>
+	{notempty name="iconFont"}
+	<link rel="stylesheet" href="{$iconFont}">
+	{/notempty}
+	<link rel="stylesheet" href="/bower/bower_components/animate.css/animate.min.css">
+	<link rel="stylesheet" href="/bower/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/bower/bower_components/sweetalert2/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="/static/css/main.css?v={$timestamp}">
+	<script src="/bower/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/bower/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/bower/bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
+</head>
+
+<body class="login-body">
+	<div class="login-wrap">
+		<h2>{$loginTitle}</h2>
+		<div id="loginForm"></div>
+	</div>
+	<script src=/vue/js/chunk-vendors.js?v={$timestamp}> </script>
+	<script src=/vue/js/login.js?v={$timestamp}> </script>
+</body>
+</html>

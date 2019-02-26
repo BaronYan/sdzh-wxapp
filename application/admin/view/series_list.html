@@ -1,0 +1,97 @@
+{extend name="base" /}
+{block name="container"}
+<div class="panel panel-default">
+  <div class="panel-heading main-color-bg">
+    <h3 class="panel-title">课程列表</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-inline form-search" method="post" action="/admin/kecheng">
+      <div class="form-group">
+        <select class="form-control" id="cate" name="cate">
+          {volist name="cate" id="vo" }
+          <option value="{$vo.scc_id}">{$vo.scc_title}</option>
+          {/volist}
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" id="status" name="status">
+          <option value="">课程状态</option>
+          <option value="0">未发布</option>
+          <option value="1">更新中</option>
+          <option value="2">已完结</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="title" class="sr-only">课程名称</label>
+        <input type="text" class="form-control" id="title" name='title'  placeholder="课程名称">
+      </div>
+      <div class="form-group">
+        <label for="author" class="sr-only">作者</label>
+        <input type="text" class="form-control" id="author" name='author' placeholder="作者">
+      </div>
+      <div class="form-group fr">
+        <button type="submit" class="btn btn-default">搜索</button>
+      </div>
+    </form>
+    <style>
+      .series-pic img{
+        width: 180px;
+        height: 120px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px #333;
+        float: left;
+        margin-right: 10px;
+      }
+    </style>
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>课程名称</th>
+          <th>讲师|价格</th>
+          <th>分类|状态</th>
+          <th>创建日期</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {volist name="list" id="vo"}
+          <tr>
+            <td style="min-width: 300px;">
+              <div class="series-pic">
+              <img src="/uploads/{$vo.series_pic}" alt=""/><br/>
+              <span style="font-weight: 700;color: #30a19b;">{$vo.series_title}</span><br/>
+              <span>{$vo.series_sub}</span>
+              </div>
+            </td>
+            <td >
+              {$vo.series_teacher}
+              <br>
+              <span style="color:#f40;">{$vo.series_price|default='免费'}</span>
+            </td>
+            <td>
+              {$vo.series_category}<br>
+              {eq name="vo.series_status" value="0"}待发布{/eq}
+              {eq name="vo.series_status" value="1"}更新中{/eq}
+              {eq name="vo.series_status" value="2"}已完结{/eq}
+            </td>
+            <td>
+              {$vo.series_addtime}
+            </td>
+            <td class="td-md">
+              <a class="btn btn-default" href="/admin/keshi/add/{$vo.series_id}">添加课时</a>
+              <a class="btn btn-default js-edit-series" href="javascript:;" data-id="{$vo.series_id}">编辑课程</a>
+            </td>
+          </tr>
+        {/volist}
+      </tbody>
+    </table>
+  </div>
+</div>
+{include file="series/edit" /}
+{/block}
+{block name="pagehead"}
+<script src="/bower/bower_components/ckeditor/ckeditor.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.21/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+<script src="https://cdn.bootcss.com/qs/6.6.0/qs.min.js"></script>
+{/block}

@@ -1,0 +1,62 @@
+<div class="list-group pagel-nav">
+    <a href="#" class="list-group-item active main-color-bg">
+        <span class="glyphicon glyphicon-cog"></span>
+        <span>控制面板</span>
+    </a>
+    <a href="/admin/banner" class="list-group-item">
+        <span class="glyphicon glyphicon-picture"></span>
+        <span>banner管理</span>
+    </a>
+    <div style="color: #999;"><span>课程管理</span></div>
+    <a href="/admin/cate" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>课程分类</span>
+    </a>
+    <a href="/admin/kecheng/add" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>添加课程</span>
+    </a>
+    <a href="/admin/kecheng" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>课程列表</span>
+    </a>
+     <a href="/admin/keshi/add" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>添加课时</span>
+    </a>
+    <!-- <a href="/admin/keshi/edit" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>编辑课时</span>
+    </a> -->
+    <div style="color: #999;"><span>班级管理</span></div>
+    <a href="/admin/banji/add" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>创建班级</span>
+    </a>
+    <a href="/admin/banji" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>班级列表</span>
+    </a>
+    <div style="color: #999;"><span>学员管理</span></div>
+    <a href="/admin/xueyuan" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>学员列表</span>
+    </a>
+    <div style="color: #999;"><span>文章管理</span></div>
+    <a href="/admin/aboutme" class="list-group-item">
+        <span class="glyphicon glyphicon-list-alt"></span>
+        <span>关于我们</span>
+    </a>
+  </div>
+<script>
+  (function(){
+    let navlist = $('.pagel-nav a')
+    let pathname = window.location.pathname
+    for (let index = 0; index < navlist.length; index++) {
+        if($(navlist[index]).attr('href')== pathname){
+            $(navlist[index]).addClass('xactive')
+            return
+        }
+    }
+  })()
+</script>

@@ -1,0 +1,203 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="editSeriesmodal">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">编辑课程</h4>
+			</div>
+			<div class="modal-body">
+				<div class="loading" v-if="loading">加载中,请稍等...</div>
+				<form class="form-horizontal" enctype="multipart/form-data" v-if="!loading">
+					<div class="form-group">
+						<label for="title" class="col-sm-2 control-label">课程标题</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" v-model="formData.title" id="title" placeholder="课程标题">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="subtile" class="col-sm-2 control-label">课程副标题</label>
+						<div class="col-sm-10">
+							<textarea type="text" class="form-control" v-model="formData.subtitle" id="subtile" placeholder="课程副标题"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="cate" class="col-sm-2 control-label">课程分类</label>
+						<div class="col-sm-10">
+							<select class="form-control" v-model="formData.cate">
+								<option :value="c.scc_id" v-for="c in cate">{{c.scc_title}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="imgurl" class="col-sm-2 control-label">封面图片</label>
+						<div class="col-sm-10">
+							<img alt="" v-if="mainimg" :src="mainimg"  style="width: 80px;height: 80px;">
+							<input type="text" class="form-control" v-model="formData.pic" >
+							<p>说明：修改图片能为网络图片，以http[s]://开头</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="price" class="col-sm-2 control-label">课程价格</label>
+						<div class="col-sm-10">
+							<input type="number" class="form-control" v-model="formData.price" id="price" placeholder="1.0">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="price" class="col-sm-2 control-label">课程进度</label>
+						<div class="col-sm-10">
+							<div class="radio" >
+								<label>
+									<input type="radio" v-model="formData.status" value="0">未发布
+								</label>
+								<label>
+									<input type="radio" v-model="formData.status" value="1">更新中
+								</label>
+								<label>
+									<input type="radio" v-model="formData.status" value="2">已完结
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="teacher" class="col-sm-2 control-label">主讲老师</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" v-model="formData.teacher" id="teacher" placeholder="主讲老师">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="content" class="col-sm-2 control-label">课程简介</label>
+						<div class="col-sm-10">
+							<textarea  id="content" ref="content">{{formData.content}}</textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" @click="submitEditSeries">确认编辑</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var editSeries = new Vue({
+	el:"#editSeriesmodal",
+	data: {
+		seriesid: '',
+		loading: true,
+		cate: [],
+		mainimg: '',
+		formData: {
+			sid:'',
+			title: '',
+			subtitle: '',
+			content:'',
+			cate:'',
+			price:'',
+			teacher:'',
+			status:'',
+			pic: ''
+		}
+	},
+	mounted(){
+		
+	},
+	watch:{
+		seriesid:function(newVal) {
+			if (newVal!='') {
+				this.loading = true
+				this.getSeriesById()
+			}
+		},
+		loading:function(newVal) {
+			if (!newVal) {
+				setTimeout(function(){CKEDITOR.replace('content')},1000)
+			}
+		}
+	},
+	methods: {
+		getSeriesById(){
+			let _this = this
+			if (!_this.seriesid) {
+				return false
+			}
+			_this.request("/admin/kecheng/edit/" + _this.seriesid,{},'get').then(ret => {
+				if (ret.data) {
+					_this.cate = ret.data.cate
+					_this.formData.sid = ret.data.serie.series_id
+					_this.formData.title = ret.data.serie.series_title
+					_this.formData.subtitle = ret.data.serie.series_sub
+					_this.formData.content = ret.data.serie.series_content
+					_this.formData.cate = ret.data.serie.series_category
+					_this.formData.price = ret.data.serie.series_price
+					_this.formData.teacher = ret.data.serie.series_teacher
+					_this.formData.status = ret.data.serie.series_status
+					var pic = ret.data.serie.series_pic.trim()
+					_this.formData.pic = pic
+					if (pic.substring(0,4)=='http') {
+						_this.mainimg = pic
+					}else{
+						_this.mainimg = "/uploads/" + pic
+
+					}
+				}
+				_this.loading = false
+
+			},err =>{
+				swal({
+					title: "获取失败",
+					text: "获取信息失败,请重新尝试",
+					type:'error',
+					timer: 3000,
+					showConfirmButton: false
+				})
+				_this.loading = false
+				console.log(err)
+			})
+		},
+		submitEditSeries(){
+			let _this = this
+			_this.formData.content = CKEDITOR.instances.content.getData()
+			_this.request("/admin/kecheng/edit/" + _this.seriesid,_this.formData,'post').then(
+				ret=>{
+					if (ret.data.status>0) {
+						swal({
+							title: "编辑成功",
+							text: "课程信息修改成功",
+							type:'success',
+							timer: 3000,
+							showConfirmButton: false
+						})
+					}else{
+						swal({
+							title: "编辑失败",
+							text: "编辑失败,你是否未修改数据？",
+							type:'error',
+							timer: 3000,
+							showConfirmButton: false
+						})
+					}
+				}
+			)
+		},
+		request(url,data,method){
+			return axios({
+				method: method || "post",
+				url: url,
+				data: Qs.stringify(data),
+				timeout: 30000, // 超时时间, 单位毫秒
+				headers: {
+					"X-Requested-With": "XMLHttpRequest",
+					"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+				}
+			})
+		}
+	}
+})
+$('.js-edit-series').on('click',function(){
+	editSeries.$data.seriesid = $(this).attr('data-id')
+	$('#editSeriesmodal').modal('show')
+})
+</script>

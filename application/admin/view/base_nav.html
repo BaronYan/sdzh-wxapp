@@ -1,0 +1,29 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- logo和适应移动端的切换设置 -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topbar"
+          aria-expanded="false">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/admin">{$brand}</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="topbar">
+        <!-- <ul class="nav navbar-nav">
+          <li <?php if($_SERVER['REQUEST_URI']=='/admin') echo 'class="active"'; ?> ><a href="/admin">控制面板</a></li>
+          <li <?php if($_SERVER['REQUEST_URI']=='/admin/kecheng') echo 'class="active"'; ?> ><a href="/admin/kecheng">课程管理</a></li>
+          <li <?php if($_SERVER['REQUEST_URI']=='/admin/banji') echo 'class="active"'; ?> ><a href="/admin/banji">班级管理</a></li>
+          <li <?php if($_SERVER['REQUEST_URI']=='/admin/xueyuan') echo 'class="active"'; ?> ><a href="/admin/xueyuan">学员管理</a></li>
+        </ul> -->
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">欢迎您登陆,{$username}!</a></li>
+          <li><a href="/admin/logout">注销</a></li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
